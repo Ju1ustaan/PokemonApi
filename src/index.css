@@ -8,6 +8,16 @@
     padding: 0;
 }
 
+input {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+select {
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .poke__card {
     width: 18%;
 }

@@ -5,13 +5,28 @@ import { useState } from "react";
 
 const App = () => {
   const [pokeName, setPokeName] = useState('')
+  const [selectedType, setSelectedType] = useState('')
+  const [selectPerPage, setSelectPerPage] = useState('10')
+
+
 
   return (
     <div className="App  bg-white relative flex">
       <Router>
-        <Navbar setPokeName={setPokeName} />
+        <Navbar 
+        setPokeName={setPokeName} 
+        selectedType={selectedType} 
+        setSelectedType={setSelectedType} 
+        selectPerPage={selectPerPage}
+        setSelectPerPage={setSelectPerPage}
+        />
         <Routes>
-          <Route path="/" element={<Home pokeName={pokeName}/>}/>
+          <Route 
+          path="/" 
+          element={<Home 
+          pokeName={pokeName} 
+          selectedType={selectedType}
+          selectPerPage={selectPerPage} />}/>
         </Routes>
       </Router>
     </div>

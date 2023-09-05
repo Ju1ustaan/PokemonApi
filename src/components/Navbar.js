@@ -1,20 +1,44 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import pokeball from '../assets/images/pokeball.jpg'
 import About from './About'
 import Info from './Info'
 import Contact from './Contact'
 import Gear from './Gear'
+import axios from 'axios'
 
-const Navbar = ({setPokeName}) => {
+const Navbar = ({setPokeName, selectedType, setSelectedType, setSelectPerPage, selectPerPage}) => {
     const [isShown, setIsShown] = useState(false)
     const [isShownInfo, setIsShownInfo] = useState(false)
     const [isShownContact, setIsShownContact] = useState(false)
     const [isShownGear, setIsShownGear] = useState(false)
 
+    const [pokeType, setPokeType] = useState([])
+
+    
+    // В этой функции я сохраняю в useState значение инпута, для дальнейшего поиска по ней
     const search = (e) => {
         if(e.key === 'Enter'){
             setPokeName(e.target.value.toLowerCase())
+            e.target.value = ''
         }
+    }
+
+    // В этой функции я сохраняю в useState значение текущего селекта, для дальнейшей сортировки по категориям
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value)
+    }
+
+    // Здесь делаю запрос, список категорий
+    useEffect(() => {
+        const getPokeType = async () => {
+            const {data} = await axios('https://pokeapi.co/api/v2/type')
+            setPokeType(data.results);
+        }
+        getPokeType()
+    }, [])
+
+    const handlePerPage = (e) => {
+        setSelectPerPage(e.target.value)
     }
     
 
@@ -50,6 +74,21 @@ const Navbar = ({setPokeName}) => {
             </aside>
 
             <header class="h-16 w-full flex items-center absolute justify-end px-5 space-x-10 bg-gray-800 fixed left-0 top-0">
+            <div className='flex items-center'>
+                <p className='mr-5 text-lg text-white'>Показать:</p>
+                <select value={selectPerPage} onChange={handlePerPage}>
+                    <option value='10'>10</option>
+                    <option value='25'>25</option>
+                    <option value='50'>50</option>
+                </select>
+            </div>
+            <select value={selectedType} onChange={handleTypeChange}>
+                <option>Выбрать категорию</option>
+                {
+                    pokeType.map((type) => <option value={type.name}>{type.name}</option>)
+                }
+            </select>
+
             <input type='text' placeholder='Поиск...' onKeyDown={search}/>
 
                 <div class="flex flex-shrink-0 items-center space-x-4 text-white">

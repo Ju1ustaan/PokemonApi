@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 
 const Cards = ({ image, name, weight, height }) => {
-    return (
-        <div class="poke__card rounded-lg flex-shrink-0 flex-grow bg-gray-400 p-4 justify-center">
+const [showDesc, setShowDesc] = useState(false)
+
+return (
+        <div onClick={() => setShowDesc(!showDesc)} class="poke__card rounded-lg flex-shrink-0 flex-grow bg-gray-400 p-4 justify-center">
             <div class="poke__img">
                 <img src={image} alt={name} />
             </div>
