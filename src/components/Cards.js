@@ -5,10 +5,11 @@ import Modal from './Modal'
 const Cards = ({ image, name, weight, height, obj }) => {
 const [showDesc, setShowDesc] = useState(false)
 
+const imgUrl = image? image: obj?.sprites?.other?.home?.front_default
 return (
         <div  class="poke__card rounded-lg flex-shrink-0 flex-grow bg-gray-400 p-4 justify-center">
             <div onClick={() => setShowDesc(true)} class="poke__img">
-                <img src={image} alt={name} />
+                <img src={imgUrl? imgUrl: obj?.other?.['official-artwork'].front_default} alt={name} />
             </div>
             <p class="poke__title text-5xl capitalize text-center font-semibold">{name}</p>
             <div class="flex justify-between">

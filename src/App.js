@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const App = () => {
   const [pokeName, setPokeName] = useState('')
-  const [selectedType, setSelectedType] = useState('')
+  const [selectedType, setSelectedType] = useState('Category')
   const [selectPerPage, setSelectPerPage] = useState('10')
 
 

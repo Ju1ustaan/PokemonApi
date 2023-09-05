@@ -75,21 +75,22 @@ const Navbar = ({setPokeName, selectedType, setSelectedType, setSelectPerPage, s
 
             <header class="h-16 w-full flex items-center absolute justify-end px-5 space-x-10 bg-gray-800 fixed left-0 top-0">
             <div className='flex items-center'>
-                <p className='mr-5 text-lg text-white'>Показать:</p>
+                <p className='mr-5 text-lg text-white'>Per Page:</p>
                 <select value={selectPerPage} onChange={handlePerPage}>
                     <option value='10'>10</option>
                     <option value='25'>25</option>
                     <option value='50'>50</option>
+                    <option value='100'>100</option>
                 </select>
             </div>
             <select value={selectedType} onChange={handleTypeChange}>
-                <option >Выбрать категорию</option>
+                <option >Category</option>
                 {
                     pokeType.map((type) => <option value={type.name}>{type.name}</option>)
                 }
             </select>
 
-            <input type='text' placeholder='Поиск...' onKeyDown={search}/>
+            <input type='text' placeholder='Search...' onKeyDown={search}/>
 
                 <div class="flex flex-shrink-0 items-center space-x-4 text-white">
 
