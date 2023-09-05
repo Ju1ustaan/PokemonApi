@@ -83,7 +83,7 @@ const Navbar = ({setPokeName, selectedType, setSelectedType, setSelectPerPage, s
                 </select>
             </div>
             <select value={selectedType} onChange={handleTypeChange}>
-                <option>Выбрать категорию</option>
+                <option >Выбрать категорию</option>
                 {
                     pokeType.map((type) => <option value={type.name}>{type.name}</option>)
                 }

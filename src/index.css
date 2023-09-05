@@ -41,4 +41,12 @@ select {
     height: 105vh;
     background-color: rgba(0,0,0,0.4);
     z-index: 1;
-    }
+}
+
+.modal__img {
+    width: 50%;
+}
+
+.modal__desc {
+    width: 50%;
+}

@@ -47,7 +47,8 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
                             image={el.sprites?.other.dream_world.front_default}
                             name={el.name}
                             weight={el.weight}
-                            height={el.height} />
+                            height={el.height} 
+                            obj={el}/>
                     ))
                 }
             </div>
