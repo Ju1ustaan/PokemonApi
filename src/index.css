@@ -7,13 +7,20 @@
     margin: 0;
     padding: 0;
 }
+
+.poke__card {
+    width: 18%;
+}
+
 .poke__img{
     height: 308px;
+    width: 100%;
 }
+
 .poke__img img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .modal__form{

@@ -5,14 +5,19 @@ import Info from './Info'
 import Contact from './Contact'
 import Gear from './Gear'
 
-
-
-
-const Navbar = () => {
+const Navbar = ({setPokeName}) => {
     const [isShown, setIsShown] = useState(false)
     const [isShownInfo, setIsShownInfo] = useState(false)
     const [isShownContact, setIsShownContact] = useState(false)
     const [isShownGear, setIsShownGear] = useState(false)
+
+    const search = (e) => {
+        if(e.key === 'Enter'){
+            setPokeName(e.target.value.toLowerCase())
+        }
+    }
+    
+
     return (
         <>
 
@@ -45,6 +50,7 @@ const Navbar = () => {
             </aside>
 
             <header class="h-16 w-full flex items-center absolute justify-end px-5 space-x-10 bg-gray-800 fixed left-0 top-0">
+            <input type='text' placeholder='Поиск...' onKeyDown={search}/>
 
                 <div class="flex flex-shrink-0 items-center space-x-4 text-white">
 

@@ -3,9 +3,9 @@ import React from 'react'
 
 const Cards = ({ image, name, weight, height }) => {
     return (
-        <div class=" rounded-lg flex-shrink-0 flex-grow bg-gray-400 p-4 justify-center">
+        <div class="poke__card rounded-lg flex-shrink-0 flex-grow bg-gray-400 p-4 justify-center">
             <div class="poke__img">
-                <img src={image} alt='pokeball' />
+                <img src={image} alt={name} />
             </div>
             <p class="poke__title text-5xl capitalize text-center font-semibold">{name}</p>
             <div class="flex justify-between">
