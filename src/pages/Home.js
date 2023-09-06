@@ -42,52 +42,39 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
 
     useEffect(() => {
         const getTypePoke = async () => {
-            const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}`)
             try {
+            const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}`)
                 setPokeType(data.pokemon)
             } catch {
                 console.log('error1');
             }
         }
         getTypePoke()
-
-
-        if (pokeType) {
-            
-
-
-            const getCategoriesItem = async (id) => {
-                console.log(id);
-                setPokeArr([])
-                try {
-                    const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${id}`)
-                    setPokeArr((prev) => [...prev, data]);
-
-                } catch {
-                    console.log('error404');
-                }
-            }
-            getCategoriesItem()
-            pokeType.map((el) => {
-                getCategoriesItem(el?.pokemon?.name)
-            })
-        }
     }, [selectedType])
+        
 
 
-
-
-    // useEffect(() => {
-    // if (pokeType) {
-    //     const getCategoriesItem = async () => {
-    //         setPokeArr([])
-    //         const {data} = await axios(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    //         setPokeArr((prev) => [...prev, data]);
-    //     }
-    //     getCategoriesItem()
-
-    // }
-    // }, [name])
+        useEffect(() => {
+            if (pokeType) {
+                const fetchData =  () => {
+                    const getCategoriesItem = async (id) => {
+                        setPokeArr([])
+                        try {
+                            const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                            setPokeArr((prev) => [...prev, data]);
+        
+                        } catch {
+                            console.log('error404');
+                        }
+                    }
+                    getCategoriesItem()
+                    pokeType.map((el) => {
+                        getCategoriesItem(el?.pokemon?.name)
+                    })
+                }
+                fetchData()
+                }
+        }, [pokeType])
 
 
     return (
