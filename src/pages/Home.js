@@ -3,13 +3,15 @@ import Cards from '../components/Cards'
 import axios from 'axios'
 
 const Home = ({ pokeName, selectedType, selectPerPage }) => {
+    const [loader, setLoader] = useState(false)
     const [pokeArr, setPokeArr] = useState([])
-    const [pokeType, setPokeType] = useState([])
+    const [pokeType, setPokeType] = useState(null)
     // const [name, setName] = useState('')
 
     // Функция котороя выводит определенное количество покемонов и выполняет запрос по id покемона выводя на экран определенного
     useEffect(() => {
         const getData = async (id) => {
+            setLoader(true)
             setPokeArr([])
             try {
                 const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${pokeName ? pokeName : id}`)
@@ -36,13 +38,15 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
         } else {
             getPokeId(selectPerPage)
         }
+        setLoader(false)
     }, [pokeName, selectPerPage])
 
 
 
     useEffect(() => {
+        setLoader(true)
         const getTypePoke = async () => {
-            const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}`)
+            const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}?limit=10`)
             try {
                 setPokeType(data.pokemon)
             } catch {
@@ -50,14 +54,13 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
             }
         }
         getTypePoke()
+        setLoader(false)
+    }, [selectedType])
 
-
+    useEffect(() => {
         if (pokeType) {
-            
-
-
+            setLoader(true)
             const getCategoriesItem = async (id) => {
-                console.log(id);
                 setPokeArr([])
                 try {
                     const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -68,45 +71,43 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
                 }
             }
             getCategoriesItem()
-            pokeType.map((el) => {
-                getCategoriesItem(el?.pokemon?.name)
-            })
+
+            const mapType = async () => {
+                await pokeType.map((el) => {
+                    getCategoriesItem(el?.pokemon?.name)
+                })
+            }
+            mapType()
         }
-    }, [selectedType])
+        setLoader(false)
+    }, [pokeType])
 
-
-
-
-    // useEffect(() => {
-    // if (pokeType) {
-    //     const getCategoriesItem = async () => {
-    //         setPokeArr([])
-    //         const {data} = await axios(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    //         setPokeArr((prev) => [...prev, data]);
-    //     }
-    //     getCategoriesItem()
-
-    // }
-    // }, [name])
-
-
-    return (
-        <div class="w-full  flex justify-between mt-16">
-            <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
-                {
-                    pokeArr.map((el) => (
-                        <Cards
-                            key={el?.name}
-                            image={el?.sprites?.other.dream_world.front_default}
-                            name={el?.name}
-                            weight={el?.weight}
-                            height={el?.height}
-                            obj={el} />
-                    ))
-                }
+    if (loader) {
+        return (
+            <div class="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
+                <div class="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64"></div>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div class="w-full  flex justify-between mt-16">
+                <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
+                    {
+                        pokeArr.map((el) => (
+                            <Cards
+                                key={el?.name}
+                                image={el?.sprites?.other.dream_world.front_default}
+                                name={el?.name}
+                                weight={el?.weight}
+                                height={el?.height}
+                                obj={el} />
+                        ))
+                    }
+                </div>
+            </div>
+        )
+    }
+
 }
 
 export default Home
