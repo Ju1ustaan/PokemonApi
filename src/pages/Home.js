@@ -46,20 +46,17 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
     useEffect(() => {
         setLoader(true)
         const getTypePoke = async () => {
-            const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}?limit=10`)
             try {
+                const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}`)
                 setPokeType(data.pokemon)
             } catch {
                 console.log('error1');
             }
         }
         getTypePoke()
-        setLoader(false)
-    }, [selectedType])
 
-    useEffect(() => {
+
         if (pokeType) {
-            setLoader(true)
             const getCategoriesItem = async (id) => {
                 setPokeArr([])
                 try {
@@ -71,42 +68,31 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
                 }
             }
             getCategoriesItem()
-
-            const mapType = async () => {
-                await pokeType.map((el) => {
-                    getCategoriesItem(el?.pokemon?.name)
-                })
-            }
-            mapType()
+            pokeType.map((el) => {
+                getCategoriesItem(el?.pokemon?.name)
+            })
         }
-        setLoader(false)
-    }, [pokeType])
+    }, [selectedType])
 
-    if (loader) {
-        return (
-            <div class="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
-                <div class="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64"></div>
+
+    return (
+        <div class="w-full  flex justify-between mt-16">
+            <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
+                {
+                    pokeArr.map((el) => (
+                        <Cards
+                            key={el?.name}
+                            image={el?.sprites?.other.dream_world.front_default}
+                            name={el?.name}
+                            weight={el?.weight}
+                            height={el?.height}
+                            obj={el} />
+                    ))
+                }
             </div>
-        )
-    } else {
-        return (
-            <div class="w-full  flex justify-between mt-16">
-                <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
-                    {
-                        pokeArr.map((el) => (
-                            <Cards
-                                key={el?.name}
-                                image={el?.sprites?.other.dream_world.front_default}
-                                name={el?.name}
-                                weight={el?.weight}
-                                height={el?.height}
-                                obj={el} />
-                        ))
-                    }
-                </div>
-            </div>
-        )
-    }
+        </div>
+    )
+}
 
 }
 
