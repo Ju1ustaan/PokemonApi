@@ -22,6 +22,7 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
                         return [...prev, data]
                     }
                 })
+                setLoader(false)
             }
             catch {
                 alert('Такой покемон не найден, попробуйте снова.')
@@ -49,20 +50,23 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
             try {
                 const { data } = await axios(`https://pokeapi.co/api/v2/type/${selectedType}`)
                 setPokeType(data.pokemon)
+                setLoader(false)
             } catch {
                 console.log('error1');
             }
         }
         getTypePoke()
+    }, [selectedType])
 
-
+    useEffect(() => {
         if (pokeType) {
+            setLoader(true)
             const getCategoriesItem = async (id) => {
                 setPokeArr([])
                 try {
                     const { data } = await axios(`https://pokeapi.co/api/v2/pokemon/${id}`)
                     setPokeArr((prev) => [...prev, data]);
-
+                    setLoader(false)
                 } catch {
                     console.log('error404');
                 }
@@ -72,28 +76,37 @@ const Home = ({ pokeName, selectedType, selectPerPage }) => {
                 getCategoriesItem(el?.pokemon?.name)
             })
         }
-    }, [selectedType])
+    }, [pokeType])
 
 
-    return (
-        <div class="w-full  flex justify-between mt-16">
-            <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
-                {
-                    pokeArr.map((el) => (
-                        <Cards
-                            key={el?.name}
-                            image={el?.sprites?.other.dream_world.front_default}
-                            name={el?.name}
-                            weight={el?.weight}
-                            height={el?.height}
-                            obj={el} />
-                    ))
-                }
+    if (loader) {
+        return (
+            <div class="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
+                <div class="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64"></div>
             </div>
-        </div>
-    )
+        )
+    }else{
+        return (
+            <div class="w-full  flex justify-between mt-16">
+                <div class=" w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4">
+                    {
+                        pokeArr.map((el) => (
+                            <Cards
+                                key={el?.name}
+                                image={el?.sprites?.other.dream_world.front_default}
+                                name={el?.name}
+                                weight={el?.weight}
+                                height={el?.height}
+                                obj={el} />
+                        ))
+                    }
+                </div>
+            </div>
+        )
+    }
+    
 }
 
-}
+
 
 export default Home
